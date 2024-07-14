@@ -1,0 +1,5 @@
+{
+  "projects": {
+    "default": "belajar-bareng-budi" // Ganti dengan ID project Firebase Anda
+  }
+}
