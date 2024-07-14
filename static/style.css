@@ -1,54 +1,208 @@
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
-    color: #333;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; /* Modern font choice */
 }
 
-h1 {
+#chatbot {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; /* Modern font choice */
+    background-image: url("bg1.jpg");
+    color: #ffffff;
+    margin: 0; /* Remove default body margins */
+    display: flex; /* Center content */
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh; /* Ensure footer sticks to bottom */
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-attachment: fixed; /* Opsional */
+    z-index: -1;
+}
+
+#body .judul h1 {
     text-align: center;
-    color: #007bff; /* Biru cerah */
+    color: #e8e8e8; /* Deep blue */
+    padding: 10px; /* Add top/bottom padding */
+    margin-bottom: -10px;
+    font-size: xx-large;
+    font-weight: bold;
+}
+
+
+
+#body .judul i {
+    color:#e8e8e8;
+    padding: 10px;
+}
+
+#body .judul {
+    background-color:rgb(37, 37, 37);
+    padding-bottom: 10px;
+    text-align: center;
+}
+
+.halo {
+    background-color:rgb(255, 236, 169);
+    border-radius: 10px;
+    width: fit-content;
+    padding-bottom: -1rem;
+    margin-bottom: 1rem;
+    height: fit-content;
+    text-align: center;
+}
+
+.halo p {
+    padding: 10px;
+    padding-bottom: -1rem;
+    color: #333;
+    margin-bottom: -1px;
+}
+
+.created {
+    background-color: aqua;
+    color: black;
+    text-align: center;
+    opacity: 1;
+    border-radius: 10px;
+    display: inline-block;
+    width: fit-content;
+}
+
+.created p {
+    margin: -1px;
+    padding: -2px;
 }
 
 #conversation {
-    border: 1px solid #ddd;
+    width: 90%;  /* Take up most of the screen width */
+    max-width: 850px; /* Limit maximum width for readability */
     padding: 20px;
     margin-bottom: 20px;
-    background-color: white;
-    border-radius: 5px;
+    background-image: url("bg-chat.jpg");
+    border-radius: 10px; /* Slightly rounder corners */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    overflow-y: auto; /* Enable scrolling for longer conversations */
+    max-height: 550px;
+    position: relative;
+    opacity: 1;
+    z-index: 1;
 }
 
 #conversation p {
     margin-bottom: 10px;
+    line-height: 1.6; /* Improve readability */
+    word-wrap: break-word;
+    border-radius: 10px;
+    clear: both; /* Prevent overlapping messages */
+    padding: 15px;
+    max-width: 70%;
 }
 
-#conversation p:nth-child(odd) {
-    text-align: left;
+#conversation .user {
+    float: left; /* Align left */
+    background-color: #9affa7; /* Greenish color */
+    color: rgb(55, 55, 55);
+    opacity: 1;
 }
 
-#conversation p:nth-child(even) {
-    text-align: right;
-    background-color: #e9ecef;
-    padding: 10px;
-    border-radius: 5px;
+#conversation .budi {
+    text-align: left; /* Align right */
+    float: right;
+    background-color: #d6d6d6; /* Bluish color */
+    color: rgb(55, 55, 55);
+    overflow-x: auto;
+    opacity: 1;
+}
+
+#loading {
+    text-align: left; 
+    float: right;
+    color: white;
+    background-color: #4060ff;
+  }
+
+.MathJax_CHTML {
+    display: block;
+    overflow-x: auto;
+    text-align: center;
+    margin: 10px auto; /* Pusatkan horizontal dan beri jarak */
+    max-width: 90%;    /* Batasan lebar responsif */
+    opacity: 1;
+}
+
+#chatForm {
+    width: 90%;
+    max-width: 600px;
+    text-align: center; /* Center the form elements */
+    opacity: 1;
 }
 
 input[type="text"] {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ddd;
-    border-radius: 3px;
+    width: calc(100% - 100px); /* Account for button width and margins */
+    padding: 12px; /* Increase padding */
+    border: 1px solid #ccc;
+    border-radius: 25px; /* Rounder input field */
+    box-sizing: border-box; /* Include padding in width calculation */
+    font-size: 16px; /* Larger font */
+    margin-right: 10px; /* Add margin between input and button */
+    opacity: 1;
 }
+
 
 button[type="submit"] {
-    background-color: #28a745;
+    background-color: #2980b9; /* Deep blue */
     color: white;
-    padding: 10px 20px;
+    padding: 12px 20px;
     border: none;
-    border-radius: 3px;
+    border-radius: 25px;
     cursor: pointer;
+    font-size: 16px;
+    opacity: 1;
+    
 }
 
+button[type="submit"]:hover {
+    background-color: #191919;
+}
+
+#userForm {
+    width: 80%; /* Make the initial form wider */
+    max-width: 600px;
+    text-align: center;
+    margin-bottom: 20px;
+    opacity: 1;
+    margin-top: 30px;
+}
+
+
 button[name="clear_conversation"] {
-    background-color: #dc3545;
+    background-color: #e74c3c; /* Red */
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 5px; /* Slight rounding */
+    opacity: 1;
+    margin-bottom: 2rem;
+    margin-top: 10px;
+}
+
+button[name="clear_conversation"]:hover {
+    background-color: #191919;
+}
+
+footer {
+    background: rgba(252, 255, 176, 0.84); /* Latar belakang putih */
+    color: #333;            /* Warna teks gelap */      /* Padding dalam footer */
+    text-align: left;
+    padding: 5px;
+  }
+  
+.ft p {
+    margin: 0;
+    margin-left: 5px;
 }

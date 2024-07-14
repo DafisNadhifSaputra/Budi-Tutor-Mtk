@@ -1,64 +1,115 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Tutor Matematika Budi</title>
+    <title>Belajar Bareng Budi</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <script>
-        function sendQuestion(form) {
-            event.preventDefault(); // Mencegah pengiriman form default
-            var user_input = $(form).find("input[name='user_input']").val(); 
-            $.post("/", $(form).serialize(), function(data) {
-                $("#conversation").append("<p>Anda: " + user_input + "</p>");
-                $("#conversation").append("<p>Budi: " + data.answer + "</p>");
-                $(form).find("input[name='user_input']").val(""); 
-            });
-            return false; 
-        }
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <meta charset="UTF-8">
 
-        $(document).ready(function() {
-            $("button[name='clear_conversation']").click(function() {
-                $.post("/clear_conversation", function(data) {
-                    if (data.message) {
-                        alert(data.message);
-                        $("#conversation").empty(); 
-                    } else {
-                        alert("Gagal menghapus riwayat percakapan.");
-                    }
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            startup: {
+                pageReady: () => {
+                    MathJax.startup.defaultPageReady().then(() => {
+                        $(document).ready(function() {
+                            // Scroll to bottom on page load
+                            $('#conversation').scrollTop($('#conversation')[0].scrollHeight);
+
+                            // Clear conversation
+                            $("button[name='clear_conversation']").click(function() {
+                                $.post("/clear_conversation", function(data) {
+                                    if (data.message) {
+                                        alert(data.message);
+                                        $("#conversation").empty();
+                                        MathJax.typesetPromise(["#conversation"]);
+                                    } else {
+                                        alert("Gagal menghapus riwayat percakapan.");
+                                    }
+                                });
+                            });
+                        });
+                    });
+                }
+            }
+        };
+
+        function sendQuestion(event) {
+            event.preventDefault();
+            var form = event.target;
+            var user_input = $(form).find("input[name='user_input']").val();
+
+            // Tampilkan input pengguna di chat
+            $("#conversation").append("<p class='user'>" + user_input + "</p>");
+
+            // Scroll to bottom after user input
+            $('#conversation').scrollTop($('#conversation')[0].scrollHeight);
+
+            // Tampilkan indikator loading setelah input diterima
+            $("#conversation").append("<p class='budi' id='loading'>Budi sedang mengetik....</p>");
+
+            $(form).find("button[type='submit']").prop("disabled", true);
+            $.post("/", $(form).serialize(), function(data) {
+                $("#conversation #loading").remove();
+                $("#conversation").append("<p class='budi'>" + data.answer + "</p>");
+
+                MathJax.typesetPromise().then(() => {
+                    $('#conversation').scrollTop($('#conversation')[0].scrollHeight);
+                    $(form).find("button[type='submit']").prop("disabled", false);
                 });
+
+                $(form).find("input[name='user_input']").val('');
             });
-        });
+        }
     </script>
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
-<body>
-    <h1>Tutor Matematika Budi</h1>
-    
-    <div id="userForm">
-        {% if not user_name %}
-        <form method="POST" action="/">
-            <input type="text" name="user_name" placeholder="Masukkan nama Anda">
-            <button type="submit">Mulai</button>
-        </form>
+<body id="body">
+    <div class="judul">
+        <h1>Belajar Bareng Budi</h1>
+        <i class="fa fa-copyright" aria-hidden="true">Created by Dafis Nadhif Saputra</i>
+    </div>
+    <section id="chatbot">
+        <div id="userForm">
+            {% if not user_name %}
+            <form method="POST" action="/">
+                <input type="text" name="user_name" placeholder="Masukkan nama Anda">
+                <button type="submit">Mulai</button>
+            </form>
+            {% endif %}
+        </div>
+        
+        {% if user_name %}
+        <div class="halo">
+            <p>Halo, {{ user_name }}!, selamat datang ke chatbot buatan saya</p>
+        </div>
+        <div id="conversation">
+            {% for message in conversation %}
+            <p class="user">{{ message.user }}</p>
+            <p class="budi">{{ message.budi }}</p>
+            {% endfor %}
+            <div id="loading" style="display: none;">Budi sedang mengetik....</div>
+        </div>
+        
+        <div id="chatForm">
+            <form method="POST" onsubmit="sendQuestion(event);">
+                <input type="text" name="user_input" placeholder="Tanyakan soal matematika...">
+                <button type="submit">Tanya</button>
+            </form>
+            <form method="POST">   
+                <button type="button" name="clear_conversation">Hapus Riwayat Chat</button>
+            </form>
+        </div>
         {% endif %}
-    </div>
-    
-    {% if user_name %}
-    <p>Halo, {{ user_name }}!</p>
-    <div id="conversation">
-        {% for message in conversation %}
-        <p>Anda: {{ message.user }}</p>
-        <p>Budi: {{ message.budi }}</p>
-        {% endfor %}
-    </div>
-    <div id="chatForm">
-        <form method="POST" onsubmit="return sendQuestion(this);">
-            <input type="text" name="user_input" placeholder="Tanyakan soal matematika...">
-            <button type="submit">Tanya</button>
-        </form>
-        <form method="POST" action="/">
-            <button type="button" name="clear_conversation" value="1">Hapus Riwayat Chat</button>
-        </form>
-    </div>
-    {% endif %}
+    </section>
 </body>
+<footer class="ft">
+    <p style="text-align: left;">&copy; 2024 Dafis Nadhif Saputra
+        <p>Kontak Saya: +62-899-3943-916</p>
+    </footer>
 </html>
