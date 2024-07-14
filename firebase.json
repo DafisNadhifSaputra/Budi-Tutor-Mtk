@@ -1,0 +1,16 @@
+{
+  "hosting": {
+    "public": "public", // Direktori yang berisi file statis (HTML, CSS, JavaScript)
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html" // Aturan rewrite untuk single-page app (jika diperlukan)
+      }
+    ]
+  }
+}
